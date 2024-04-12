@@ -23,7 +23,7 @@ import (
 	"entgo.io/ent/entc/load"
 	"entgo.io/ent/schema/field"
 
-	"golang.org/x/tools/imports"
+	imports "golang.org/x/tools/imports"
 )
 
 type (

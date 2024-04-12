@@ -51,7 +51,6 @@ func LoadGraph(schemaPath string, cfg *gen.Config) (*gen.Graph, error) {
 //		Header: "// Custom header",
 //		IDType: &field.TypeInfo{Type: field.TypeInt},
 //	})
-//
 func Generate(schemaPath string, cfg *gen.Config, options ...Option) error {
 	if cfg.Target == "" {
 		abs, err := filepath.Abs(schemaPath)
@@ -109,6 +108,13 @@ func Storage(typ string) Option {
 			return err
 		}
 		cfg.Storage = storage
+		return nil
+	}
+}
+
+func CacheSize(sizeMbytes uint) Option {
+	return func(cfg *gen.Config) error {
+		cfg.CacheSizeMbytes = sizeMbytes
 		return nil
 	}
 }
@@ -211,7 +217,6 @@ func TemplateDir(path string) Option {
 //	if err != nil {
 //		log.Fatalf("running ent codegen: %v", err)
 //	}
-//
 type Extension interface {
 	// Hooks holds an optional list of Hooks to apply
 	// on the graph before/after the code-generation.
@@ -263,7 +268,6 @@ func Extensions(extensions ...Extension) Option {
 //	type Extension struct {
 //		entc.DefaultExtension
 //	}
-//
 type DefaultExtension struct{}
 
 // Hooks of the extensions.
@@ -343,7 +347,6 @@ func DependencyName(name string) DependencyOption {
 //	if err := entc.Generate("./ent/path", &gen.Config{}, opts...); err != nil {
 //		log.Fatalf("running ent codegen: %v", err)
 //	}
-//
 func Dependency(opts ...DependencyOption) Option {
 	return func(cfg *gen.Config) error {
 		d := &gen.Dependency{}

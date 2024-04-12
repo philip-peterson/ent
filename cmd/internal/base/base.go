@@ -145,6 +145,7 @@ func GenerateCmd(postRun ...func(*gen.Config)) *cobra.Command {
 	var (
 		cfg       gen.Config
 		storage   string
+		cacheSize uint
 		features  []string
 		templates []string
 		idtype    = IDType(field.TypeInt)
@@ -160,6 +161,7 @@ func GenerateCmd(postRun ...func(*gen.Config)) *cobra.Command {
 				opts := []entc.Option{
 					entc.Storage(storage),
 					entc.FeatureNames(features...),
+					entc.CacheSize(cacheSize),
 				}
 				for _, tmpl := range templates {
 					typ := "dir"
@@ -198,6 +200,7 @@ func GenerateCmd(postRun ...func(*gen.Config)) *cobra.Command {
 	)
 	cmd.Flags().Var(&idtype, "idtype", "type of the id field")
 	cmd.Flags().StringVar(&storage, "storage", "sql", "storage driver to support in codegen")
+	cmd.Flags().UintVar(&cacheSize, "cache-size", 10, "cache size (in MiB) for code generation")
 	cmd.Flags().StringVar(&cfg.Header, "header", "", "override codegen header")
 	cmd.Flags().StringVar(&cfg.Target, "target", "", "target directory for codegen")
 	cmd.Flags().StringSliceVarP(&features, "feature", "", nil, "extend codegen with additional features")

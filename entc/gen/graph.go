@@ -95,6 +95,8 @@ type (
 		// BuildFlags holds a list of custom build flags to use
 		// when loading the schema packages.
 		BuildFlags []string
+
+		CacheSizeMbytes uint
 	}
 
 	// Graph holds the nodes/entities of the loaded graph schema. Note that, it doesn't
@@ -278,7 +280,7 @@ func generate(g *Graph) error {
 	if skipFormat {
 		return nil
 	}
-	return assets.format()
+	return assets.format(g.Config.CacheSizeMbytes)
 }
 
 // addNode creates a new Type/Node/Ent to the graph.
@@ -1105,8 +1107,12 @@ func (a assets) write() error {
 }
 
 // format runs "goimports" on all assets.
-func (a assets) format() error {
-	c := imports.NewCache(10000)
+func (a assets) format(cacheSize uint) error {
+	var c imports.Cache
+	if cacheSize > 0 {
+		c = imports.NewCache(cacheSize)
+	}
+
 	for path, content := range a.files {
 		fmt.Println("invoke 2!")
 		src, err := imports.Process(c, path, content, nil)

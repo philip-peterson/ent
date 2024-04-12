@@ -41,3 +41,5 @@ require (
 	golang.org/x/text v0.8.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace golang.org/x/tools => /Users/philippeterson/Code/golang-tools

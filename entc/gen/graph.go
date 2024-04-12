@@ -1106,8 +1106,9 @@ func (a assets) write() error {
 
 // format runs "goimports" on all assets.
 func (a assets) format() error {
+	c := imports.NewCache(100)
 	for path, content := range a.files {
-		src, err := imports.Process(path, content, nil)
+		src, err := imports.Process(c, path, content, nil)
 		if err != nil {
 			return fmt.Errorf("format file %s: %w", path, err)
 		}

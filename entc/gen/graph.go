@@ -1108,15 +1108,15 @@ func (a assets) write() error {
 
 // format runs "goimports" on all assets.
 func (a assets) format(cacheSize uint) error {
-	var c imports.Cache
+	var s imports.SessionInterface
 	if cacheSize > 0 {
-		c = imports.NewCache(cacheSize)
+		s = imports.NewSession(cacheSize)
 	}
 
 	for path, content := range a.files {
 		fmt.Println("invoke 2!")
-		opts := imports.Options{Cache: c}
-		src, err := imports.Process(path, content, opts)
+		opts := imports.Options{Session: s}
+		src, err := imports.Process(path, content, &opts)
 		if err != nil {
 			return fmt.Errorf("format file %s: %w", path, err)
 		}

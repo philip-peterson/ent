@@ -1115,7 +1115,8 @@ func (a assets) format(cacheSize uint) error {
 
 	for path, content := range a.files {
 		fmt.Println("invoke 2!")
-		src, err := imports.Process(c, path, content, nil)
+		opts := imports.Options{Cache: c}
+		src, err := imports.Process(path, content, opts)
 		if err != nil {
 			return fmt.Errorf("format file %s: %w", path, err)
 		}
